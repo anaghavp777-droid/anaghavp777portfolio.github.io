@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anagha V P — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15172A;
+    --panel:#1D2039;
+    --panel-soft:#252945;
+    --text:#EDEDF5;
+    --text-dim:rgba(237,237,245,0.58);
+    --text-faint:rgba(237,237,245,0.36);
+    --gold:#F2B640;
+    --coral:#FF7A59;
+    --violet:#8C7CF0;
+    --line:rgba(237,237,245,0.09);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+  .shell{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    max-width:1180px;
+    margin:0 auto;
+    min-height:100vh;
+  }
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    padding:44px 28px;
+    border-right:1px solid var(--line);
+    position:sticky; top:0; height:100vh;
+    display:flex; flex-direction:column;
+  }
+  .brand{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:-0.01em;
+  }
+  .brand-role{
+    margin-top:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    line-height:1.7;
+  }
+  nav{ margin-top:52px; display:flex; flex-direction:column; gap:4px; }
+  nav a{
+    font-size:14px;
+    color:var(--text-dim);
+    padding:9px 12px;
+    border-radius:8px;
+    transition:background .15s, color .15s;
+    display:flex; align-items:center; gap:10px;
+  }
+  nav a:hover{ background:var(--panel); color:var(--text); }
+  nav a .idx{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-faint); }
+
+  .sidebar-foot{
+    margin-top:auto;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .sidebar-foot a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--text-dim);
+    display:flex; align-items:center; gap:8px;
+  }
+  .sidebar-foot a:hover{ color:var(--gold); }
+  .sidebar-foot .sq{ width:6px; height:6px; background:var(--gold); border-radius:1px; }
+
+  /* ---------------- MAIN ---------------- */
+  main{ padding:44px 40px 80px; }
+
+  .panel-title{
+    display:flex; align-items:center; gap:10px;
+    margin:64px 0 24px;
+  }
+  .panel-title:first-of-type{ margin-top:0; }
+  .panel-title .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--gold);
+    border:1px solid var(--line);
+    padding:3px 8px; border-radius:6px;
+  }
+  .panel-title h2{
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:22px;
+  }
+
+  /* ---- hero ---- */
+  .hero-card{
+    background:linear-gradient(135deg, var(--panel) 0%, var(--panel-soft) 100%);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:44px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-card::before{
+    content:'';
+    position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px;
+    background:radial-gradient(circle, rgba(242,182,64,0.18), transparent 70%);
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--coral);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .hero-card h1{
+    font-family:'Sora', sans-serif;
+    font-weight:800;
+    font-size:clamp(36px, 5vw, 54px);
+    margin-top:14px;
+    letter-spacing:-0.02em;
+    max-width:14ch;
+  }
+  .hero-card p{
+    margin-top:18px;
+    max-width:52ch;
+    color:var(--text-dim);
+    font-size:16px;
+  }
+
+  /* ---- KPI row ---- */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+    margin-top:28px;
+  }
+  .kpi-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px;
+  }
+  .kpi-value{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:28px;
+    color:var(--gold);
+  }
+  .kpi-label{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .kpi-spark{
+    display:flex; align-items:flex-end; gap:3px;
+    height:22px; margin-top:12px;
+  }
+  .kpi-spark div{
+    flex:1; background:var(--violet); border-radius:2px; opacity:.55;
+  }
+  .kpi-spark div:last-child{ opacity:1; background:var(--gold); }
+
+  /* ---- experience timeline ---- */
+  .timeline{ display:flex; flex-direction:column; gap:22px; }
+  .tl-row{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+  }
+  .tl-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    flex-wrap:wrap; gap:10px;
+    margin-bottom:14px;
+  }
+  .tl-role{ font-family:'Sora', sans-serif; font-weight:600; font-size:17px; }
+  .tl-org{ font-size:13px; color:var(--text-dim); margin-top:2px; }
+  .tl-date{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-faint); white-space:nowrap; }
+  .tl-bar-track{
+    height:8px; background:rgba(237,237,245,0.07); border-radius:5px; overflow:hidden;
+    margin-bottom:16px;
+  }
+  .tl-bar-fill{
+    height:100%; border-radius:5px;
+    background:linear-gradient(90deg, var(--violet), var(--gold));
+  }
+  .tl-list{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .tl-list li{
+    font-size:14px; color:var(--text-dim);
+    padding-left:16px; position:relative;
+  }
+  .tl-list li::before{
+    content:'—'; position:absolute; left:0; color:var(--text-faint);
+  }
+
+  /* ---- projects ---- */
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+  }
+  .proj-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .proj-card h3{ font-family:'Sora', sans-serif; font-weight:600; font-size:16.5px; }
+  .proj-card p{ font-size:13.5px; color:var(--text-dim); }
+  .proj-metric-row{ display:flex; align-items:center; gap:10px; }
+  .proj-metric-row .track{
+    flex:1; height:6px; background:rgba(237,237,245,0.08); border-radius:4px; overflow:hidden;
+  }
+  .proj-metric-row .fill{ height:100%; background:var(--coral); border-radius:4px; }
+  .proj-metric-row .val{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--coral); white-space:nowrap; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+  .proj-tags span{
+    font-family:'IBM Plex Mono', monospace; font-size:10px;
+    color:var(--text-faint); border:1px solid var(--line);
+    padding:3px 8px; border-radius:6px;
+  }
+
+  /* ---- skills ---- */
+  .skills-wrap{ display:flex; flex-direction:column; gap:26px; }
+  .skill-cat-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--violet); text-transform:uppercase; letter-spacing:.08em;
+    margin-bottom:12px;
+  }
+  .cloud{ display:flex; flex-wrap:wrap; gap:9px; }
+  .cloud span{
+    font-family:'Sora', sans-serif; font-size:13.5px; font-weight:500;
+    padding:8px 14px; border-radius:20px;
+    background:var(--panel); border:1px solid var(--line);
+    color:var(--text);
+  }
+  .cloud span.hl{ border-color:var(--gold); color:var(--gold); }
+
+  /* ---- education ---- */
+  .edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .edu-card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:14px; padding:24px;
+    display:flex; align-items:center; gap:20px;
+  }
+  .gauge{
+    width:64px; height:64px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:conic-gradient(var(--gold) calc(var(--pct) * 1%), rgba(237,237,245,0.08) 0);
+    flex-shrink:0;
+  }
+  .gauge-inner{
+    width:48px; height:48px; border-radius:50%;
+    background:var(--panel);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold);
+  }
+  .edu-card h3{ font-family:'Sora', sans-serif; font-size:15px; font-weight:600; }
+  .edu-card .org{ font-size:12.5px; color:var(--text-dim); margin-top:4px; }
+  .edu-card .date{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-faint); margin-top:6px; }
+
+  footer{
+    margin-top:70px; padding-top:24px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-faint);
+    flex-wrap:wrap; gap:12px;
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .hero-card, .kpi-card, .tl-row, .proj-card, .edu-card{
+      animation:rise .5s ease-out both;
+    }
+    @keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+  }
+
+  @media (max-width:880px){
+    .shell{ grid-template-columns:1fr; }
+    .sidebar{ position:relative; height:auto; border-right:none; border-bottom:1px solid var(--line); flex-direction:row; align-items:center; justify-content:space-between; padding:24px 28px; }
+    nav{ display:none; }
+    .sidebar-foot{ margin-top:0; flex-direction:row; gap:16px; }
+    main{ padding:32px 24px 60px; }
+    .kpi-row{ grid-template-columns:1fr 1fr; }
+    .projects-grid, .edu-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">Anagha V P</div>
+      <div class="brand-role">QA Engineer<br>Data Analyst<br>Software Developer</div>
+    </div>
+    <nav>
+      <a href="#overview"><span class="idx">01</span> Overview</a>
+      <a href="#experience"><span class="idx">02</span> Experience</a>
+      <a href="#projects"><span class="idx">03</span> Projects</a>
+      <a href="#skills"><span class="idx">04</span> Skills</a>
+      <a href="#education"><span class="idx">05</span> Education</a>
+    </nav>
+    <div class="sidebar-foot">
+      <a href="https://linkedin.com/in/anagha-v-p-88488622a" target="_blank" rel="noopener"><span class="sq"></span>LinkedIn</a>
+      <a href="https://github.com/Anagha7777" target="_blank" rel="noopener"><span class="sq"></span>GitHub</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <section id="overview">
+      <div class="hero-card">
+        <div class="hero-eyebrow">Open to work</div>
+        <h1>Building and breaking software, on purpose.</h1>
+        <p>Computer Science graduate working across test engineering, analytics, and full-stack development — comfortable writing a feature, testing it, and reporting on how it performs.</p>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-value">9.56</div>
+          <div class="kpi-label">CGPA / 10.0</div>
+          <div class="kpi-spark"><div style="height:40%"></div><div style="height:55%"></div><div style="height:70%"></div><div style="height:60%"></div><div style="height:90%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">100+</div>
+          <div class="kpi-label">Test cases authored</div>
+          <div class="kpi-spark"><div style="height:30%"></div><div style="height:50%"></div><div style="height:45%"></div><div style="height:75%"></div><div style="height:95%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">10+</div>
+          <div class="kpi-label">Power BI dashboards</div>
+          <div class="kpi-spark"><div style="height:60%"></div><div style="height:40%"></div><div style="height:80%"></div><div style="height:50%"></div><div style="height:85%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">4</div>
+          <div class="kpi-label">Projects shipped</div>
+          <div class="kpi-spark"><div style="height:50%"></div><div style="height:65%"></div><div style="height:55%"></div><div style="height:80%"></div><div style="height:70%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="panel-title"><span class="num">02</span><h2>Experience</h2></div>
+      <div class="timeline">
+
+        <div class="tl-row">
+          <div class="tl-top">
+            <div>
+              <div class="tl-role">Data Analyst Intern</div>
+              <div class="tl-org">Luminar TechnoLab · Kochi</div>
+            </div>
+            <div class="tl-date">MAY 2026 — PRESENT</div>
+          </div>
+          <div class="tl-bar-track"><div class="tl-bar-fill" style="width:33%"></div></div>
+          <ul class="tl-list">
+            <li>Cleaned, transformed, and analyzed 15+ business datasets using Python, SQL, and Excel</li>
+            <li>Designed 10+ interactive Power BI dashboards at 89% data accuracy</li>
+            <li>Wrote 20+ optimized SQL queries across cross-functional analytics projects</li>
+          </ul>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-top">
+            <div>
+              <div class="tl-role">Software Development Engineer in Testing</div>
+              <div class="tl-org">LTIMindtree</div>
+            </div>
+            <div class="tl-date">APR 2025 — DEC 2025</div>
+          </div>
+          <div class="tl-bar-track"><div class="tl-bar-fill" style="width:100%"></div></div>
+          <ul class="tl-list">
+            <li>Authored and executed 100+ test cases using TDD, validating data workflows</li>
+            <li>Tested DAO layers across 10+ database modules for SQL/MySQL data integrity</li>
+            <li>Built 25+ BDD scenarios, improving test coverage by 30%</li>
+            <li>Automated reporting with Python, cutting manual effort by 25%</li>
+            <li>Worked with 8+ member Agile teams, achieving 89% on-time delivery</li>
+          </ul>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-top">
+            <div>
+              <div class="tl-role">Full-Stack Development Intern (MERN)</div>
+              <div class="tl-org">ICT Academy of Kerala</div>
+            </div>
+            <div class="tl-date">MAY 2023 — JUN 2023</div>
+          </div>
+          <div class="tl-bar-track"><div class="tl-bar-fill" style="width:11%"></div></div>
+          <ul class="tl-list">
+            <li>Built a Travel Blog web app in a 4-week sprint using MongoDB, Express.js, React.js, Node.js</li>
+            <li>Built 10+ responsive React UI components across desktop and mobile</li>
+            <li>Implemented 8+ RESTful API endpoints for server-side data management</li>
+            <li>Used Git across 50+ commits in an Agile workflow</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="panel-title"><span class="num">03</span><h2>Projects</h2></div>
+      <div class="projects-grid">
+
+        <div class="proj-card">
+          <h3>Image Forgery Detection &amp; Retrieval</h3>
+          <p>Major project, team lead — GNN, CNN+LSTM, edge detection, GAN, and image inpainting to detect tampered images.</p>
+          <div class="proj-metric-row">
+            <div class="track"><div class="fill" style="width:89%"></div></div>
+            <div class="val">89%</div>
+          </div>
+          <div class="proj-tags"><span>ML</span><span>GAN</span><span>Python</span></div>
+        </div>
+
+        <div class="proj-card">
+          <h3>Comment Toxicity Classification</h3>
+          <p>CNN + LSTM model with a Gradio interface to flag toxic comments in real time.</p>
+          <div class="proj-metric-row">
+            <div class="track"><div class="fill" style="width:88%"></div></div>
+            <div class="val">88%</div>
+          </div>
+          <div class="proj-tags"><span>CNN</span><span>LSTM</span><span>Gradio</span></div>
+        </div>
+
+        <div class="proj-card">
+          <h3>Stock Prediction Model</h3>
+          <p>Forecasting model built with yfinance, NumPy, Pandas, and Matplotlib, trained on 5+ years of market data.</p>
+          <div class="proj-tags"><span>NumPy</span><span>Pandas</span><span>ML</span></div>
+        </div>
+
+        <div class="proj-card">
+          <h3>Travel Blog Website</h3>
+          <p>Full-stack MERN application with authentication, posts, and comments across 4+ core modules.</p>
+          <div class="proj-tags"><span>MongoDB</span><span>React</span><span>Node.js</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="panel-title"><span class="num">04</span><h2>Skills</h2></div>
+      <div class="skills-wrap">
+        <div>
+          <div class="skill-cat-label">Technical</div>
+          <div class="cloud">
+            <span class="hl">Python</span><span>JavaScript</span><span>Java</span><span>C++</span>
+            <span class="hl">SQL</span><span>MySQL</span><span>MongoDB</span><span>Express.js</span>
+            <span class="hl">React.js</span><span>Node.js</span><span>HTML</span><span>CSS</span>
+            <span>Selenium</span><span>TDD</span><span>BDD</span><span class="hl">Power BI</span>
+            <span>Data Analytics</span><span>Agile</span><span>Scrum</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-cat-label">Soft skills</div>
+          <div class="cloud">
+            <span>Communication</span><span>Team Collaboration</span><span>Presentation</span>
+            <span>Leadership</span><span>Problem Solving</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="panel-title"><span class="num">05</span><h2>Education</h2></div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="gauge" style="--pct:95.6"><div class="gauge-inner">9.56</div></div>
+          <div>
+            <h3>B.Tech, Computer Science &amp; Engineering</h3>
+            <div class="org">Jyothi Engineering College, APJ Abdul Kalam Technological University</div>
+            <div class="date">NOV 2021 — MAR 2025</div>
+          </div>
+        </div>
+        <div class="edu-card">
+          <div class="gauge" style="--pct:99"><div class="gauge-inner">99%</div></div>
+          <div>
+            <h3>Class XII, Computer Science</h3>
+            <div class="org">Little Flower C.G.H.S.S, DHSE Kerala</div>
+            <div class="date">JUN 2019 — MAR 2021</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Dashboard last synced — Jul 2026</span>
+      <span>Designed for Anagha V P</span>
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>
